@@ -2,6 +2,9 @@ class User < ApplicationRecord
     has_many :matches
     has_many :matched_users, through: :matches, dependent: :destroy
    
+
+
+    
     has_many :pictures
     has_many :messages
     has_many :conversations, :foreign_key => :sender_id
