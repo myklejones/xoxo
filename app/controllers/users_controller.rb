@@ -17,7 +17,7 @@ class UsersController < ApplicationController
         
         user = User.create(new_user_params)
         if user.valid?
-            byebug
+         
             render json: {ok:true}
         else
             
