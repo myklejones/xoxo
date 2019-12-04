@@ -14,26 +14,46 @@ class UsersController < ApplicationController
     end 
 
     def create
-
-        user = User.create(user_params)
+        
+        user = User.create(new_user_params)
         if user.valid?
+            byebug
             render json: {ok:true}
         else
+            
             render json: {errors: user.errors.full_messages}, status: :unprocessable_entity
         end
 
     end
 
     def update
+        user= User.find(user_params[:id])
+        user.password = $pass
+        user.update(update_user_params)
+       
+     
+        if user_id_from_token == user.id && user.valid?
+            render json: {ok:true, user: user} 
+            
+        else
+            render json: {errors: user.errors.full_messages}, status: :unprocessable_entity
+        end
     end 
 
     def destroy
     end 
     
     private
-    def user_params 
+    def update_user_params
+        params.require(:user).permit(:username, :name, :age, :dob, :city_state, :about_me, :sex)
+    end
 
-        params.permit(:username, :password, :email, :name, :photo, :age, :dob, :city_state, :about_me, :sex, :active)
+    def user_params 
+        params.permit(:id,:username, :email, :name, :photo, :age, :dob, :city_state, :about_me, :sex, :active)
+    end 
+
+    def new_user_params 
+        params.permit(:username, :password ,:email, :name, :photo, :age, :dob, :city_state, :about_me, :sex, :active)
     end 
 
 end
