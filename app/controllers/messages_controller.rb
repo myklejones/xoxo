@@ -1,5 +1,11 @@
 class MessagesController < ApplicationController
+    before_action do
+        @conversation = Conversation.find(params[:conversation_id])
+      end
+
+     
     def create
+        byebug
         user_id = params[:message_sender_id]
         messageCreated = Message.create(message_params)
     
@@ -14,6 +20,6 @@ class MessagesController < ApplicationController
     end
         private
         def message_params
-            params.permit(:message, :read, :message_reciever_id, :message_sender_id)
+            params.permit(:message, :read, :reciever_id, :sender_id)
         end
 end

@@ -27,12 +27,14 @@ class UsersController < ApplicationController
     end
 
     def update
-        user= User.find(user_params[:id])
+        
+        
+        user= User.find(update_user_params[:id])
         user.password = $pass
         user.update(update_user_params)
        
      
-        if user_id_from_token == user.id && user.valid?
+        if user_id_from_token == user.id
             render json: {ok:true, user: user} 
             
         else
@@ -45,7 +47,7 @@ class UsersController < ApplicationController
     
     private
     def update_user_params
-        params.require(:user).permit(:username, :name, :age, :dob, :city_state, :about_me, :sex)
+        params.require(:user).permit(:id,:username, :name, :age, :dob, :city_state, :about_me, :sex)
     end
 
     def user_params 
