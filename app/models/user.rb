@@ -23,7 +23,7 @@ class User < ApplicationRecord
 
 
     validates :username, presence: true, length: { minimum: 2 }, uniqueness: true
-    validates :password, presence: true, length: { in: 6..15 }, format: PASSWORD_FORMAT
+    # validates :password, presence: true, length: { in: 6..15 }, format: PASSWORD_FORMAT
     validates :email, presence: true, uniqueness: true
     validates :name, presence: true, length: { minimum: 2 }
     validates :photo, presence: true

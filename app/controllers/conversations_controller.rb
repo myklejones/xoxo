@@ -1,30 +1,33 @@
 class ConversationsController < ApplicationController
 
+  before_action do
+    if Conversation.between(conversation_params[:sender_id],conversation_params[:recipient_id]).present?
+      @conversation =  Conversation.between(conversation_params[:sender_id],conversation_params[:recipient_id]).first
+      @message= message_params
+      @message[:conversation_id] = @conversation.id
+    else
+     @conversation = Conversation.create(conversation_params)
+     @message= message_params
+    @message[:conversation_id] = @conversation.id
+    end
+  end
 
     def create
-      
-        if Conversation.between(params[:sender_id],params[:recipient_id]).present? && user_id_from_token == params[:sender_id].to_i
-          conversation = Conversation.between(params[:sender_id], params[:recipient_id]).first
-          message = Message.create(message_params)
-
-          render json: {ok:true, conversation: Conversation}
-        elsif user_id_from_token == params[:sender_id].to_i
-          conversation = Conversation.create!(conversation_params)
-          message = Message.new(message_params)
-          render json: {ok:true, conversation: Conversation}
+        if message_params[:user_id].to_i == user_id_from_token
+          message = Message.create(@message)
+          render json: {ok:true, conversation: @conversation, message: message}
         else
             render json: {errors: conversation.errors.full_messages}, status: :unprocessable_entity
         end
-       
       end
     
     
     private
  def conversation_params
-  params.permit(:sender_id, :recipient_id)
+  params.require(:conversation).permit(:sender_id, :recipient_id)
  end
  def message_params
-    params.permit(:user_id, :conversation_id, :body)
-end
+    params.require(:message).permit(:user_id, :body, :read)
+ end
 
 end
