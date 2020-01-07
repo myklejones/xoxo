@@ -5,7 +5,7 @@ class MessagesController < ApplicationController
 
      
     def create
-        byebug
+        
         user_id = params[:message_sender_id]
         messageCreated = Message.create(message_params)
     
