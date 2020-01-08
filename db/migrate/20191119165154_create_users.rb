@@ -9,9 +9,13 @@ class CreateUsers < ActiveRecord::Migration[6.0]
       t.integer :age
       t.string :dob
       t.string :city_state
-      t.string :about_me
       t.string :sex
+      t.string :about_me
+      t.string :interest
+      t.string :preference
+      t.string :body_type
       t.boolean :active  
+      t.string :profession 
 
 
       t.timestamps
