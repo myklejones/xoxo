@@ -12,6 +12,11 @@ class ConversationsController < ApplicationController
     end
   end
 
+  def index
+    messages = Message.all.map{|m| m.conversation_id == @conversation.id}
+    render json:{ok:true, conversation: @conversation, messages: messages}
+  end
+
     def create
         if message_params[:user_id].to_i == user_id_from_token
           message = Message.create(@message)
