@@ -36,13 +36,10 @@ ActiveRecord::Schema.define(version: 2019_11_20_201538) do
     t.text "body"
     t.boolean "read", default: false
     t.bigint "user_id"
-    t.bigint "message_reciever_id"
     t.bigint "conversation_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["conversation_id"], name: "index_messages_on_conversation_id"
-    t.index ["message_reciever_id"], name: "index_messages_on_message_reciever_id"
-    t.index ["user_id", "message_reciever_id"], name: "index_messages_on_user_id_and_message_reciever_id"
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
@@ -63,7 +60,7 @@ ActiveRecord::Schema.define(version: 2019_11_20_201538) do
     t.string "dob"
     t.string "city_state"
     t.string "sex"
-    t.string "about_me"
+    t.text "about_me"
     t.string "interest"
     t.string "preference"
     t.string "body_type"
@@ -76,5 +73,4 @@ ActiveRecord::Schema.define(version: 2019_11_20_201538) do
   add_foreign_key "matches", "users"
   add_foreign_key "matches", "users", column: "matched_user_id"
   add_foreign_key "messages", "users"
-  add_foreign_key "messages", "users", column: "message_reciever_id"
 end

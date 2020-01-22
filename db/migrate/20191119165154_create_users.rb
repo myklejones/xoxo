@@ -10,7 +10,7 @@ class CreateUsers < ActiveRecord::Migration[6.0]
       t.string :dob
       t.string :city_state
       t.string :sex
-      t.string :about_me
+      t.text :about_me
       t.string :interest
       t.string :preference
       t.string :body_type

@@ -7,7 +7,7 @@ class User < ApplicationRecord
     
     has_many :pictures
     has_many :messages
-    has_many :message_recievers, through: :messages
+    has_many :message_recievers
     has_many :conversations, :foreign_key => :sender_id
    
 
