@@ -7,7 +7,9 @@ class UsersController < ApplicationController
             user = User.find(user_id)
             user = UserSerializer.new(user)
             all_users = User.all
-            render json: {user: user, all_users: all_users}
+            conversations = Conversation.all.each{|c| c.sender_id == user_id_from_token || c.recipient_id == user_id_from_token}
+            messages = Message.all.each{|m| conversations.map{|c| m.conversation_id == c.id}}
+            render json: {user: user, all_users: all_users, messages:messages, conversations:conversations}
         else 
             render json: {no_permit: true}, status: :unauthorized
         end

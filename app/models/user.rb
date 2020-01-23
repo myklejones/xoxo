@@ -6,6 +6,8 @@ class User < ApplicationRecord
 
     
     has_many :pictures
+
+
     has_many :messages
 
 
@@ -29,8 +31,8 @@ class User < ApplicationRecord
 
 
     validates :username, presence: true, length: { minimum: 2 }, uniqueness: true
-    # validates :password, presence: true, length: { in: 6..15 }, format: PASSWORD_FORMAT
     validates :email, presence: true, uniqueness: true
+    # validates :password, presence: true, length: { in: 6..15 }, format: PASSWORD_FORMAT
     # validates :name, presence: true, length: { minimum: 2 }
     # validates :photo, presence: true
     # validates :age, presence: true, numericality: true
