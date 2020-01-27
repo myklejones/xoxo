@@ -41,4 +41,5 @@ class User < ApplicationRecord
     # validates :about_me, presence: true, length: { maximum: 250 }
     # validates :sex, presence: true
     # validates :active, inclusion: { in: [true, false] }
+
 end

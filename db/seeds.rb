@@ -11,6 +11,25 @@ User.create(username: "justine", password: "Justine1", email:"justine@gmail.com"
 
 
 
+40.times do 
+    User.create([{
+        username: Faker::Name.name,
+        password: Faker::Name.name,
+        email: Faker::University.name,
+        name: Faker::Artist.name,
+        photo: Faker::Avatar.image,
+        age: Faker::Number.within(range: 18..65),
+        dob: Faker::Date.birthday(min_age: 18, max_age: 65),
+        city_state: Faker::Address.state,
+        about_me: Faker::Quotes::Shakespeare.as_you_like_it_quote,
+        sex: Faker::Gender.binary_type ,
+        active: false,
+        interest: Faker::Music.band,
+        body_type: Faker::TvShows::RickAndMorty.quote ,
+        preference: Faker::Demographic.sex,
+        profession: Faker::Job.title
+    }])
+end
 
 
 puts " it has been seeded "

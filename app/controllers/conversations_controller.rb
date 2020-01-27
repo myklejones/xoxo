@@ -7,8 +7,10 @@ class ConversationsController < ApplicationController
   def index
    
     if user_id_from_token 
-      conversations = Conversation.all.each{|c| c.sender_id == user_id_from_token || c.recipient_id == user_id_from_token}
+      
+      conversations = Conversation.all.each{|c| c.sender_id == user_id_from_token || c.recipient_id == user_id_from_token }
       messages = Message.all.each{|m| conversations.map{|c| m.conversation_id == c.id}}
+      
       render json:{ok:true, conversations: conversations, messages: messages }
 
     else

@@ -68,6 +68,8 @@ GEM
       dotenv (= 2.7.5)
       railties (>= 3.2, < 6.1)
     erubi (1.9.0)
+    faker (2.6.0)
+      i18n (>= 1.6, < 1.8)
     fast_jsonapi (1.5)
       activesupport (>= 4.2)
     ffi (1.11.2)
@@ -163,6 +165,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.2)
   byebug
   dotenv-rails
+  faker
   fast_jsonapi
   jwt
   listen (>= 3.0.5, < 3.2)
