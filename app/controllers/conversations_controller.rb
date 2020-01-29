@@ -8,9 +8,10 @@ class ConversationsController < ApplicationController
    
     if user_id_from_token 
       
+      
       conversations = Conversation.all.each{|c| c.sender_id == user_id_from_token || c.recipient_id == user_id_from_token }
       messages = Message.all.each{|m| conversations.map{|c| m.conversation_id == c.id}}
-      
+
       render json:{ok:true, conversations: conversations, messages: messages }
 
     else
@@ -36,12 +37,26 @@ class ConversationsController < ApplicationController
     def create
         if message_params[:user_id].to_i == user_id_from_token
           if Conversation.between(conversation_params[:sender_id],conversation_params[:recipient_id]).present?
-            conversation =  Conversation.between(conversation_params[:sender_id],conversation_params[:recipient_id]).first
-            message = conversation.messages.create(message_params)
+            conversationN =  Conversation.between(conversation_params[:sender_id],conversation_params[:recipient_id]).first
+            message = conversationN.messages.create(message_params)
+  
+            user = User.find(user_id_from_token)
+            s = user.convos_as_senders
+            r = user.convos_as_recipients
+            conversation = r + s 
+            conversation = ConversationSerializer.new(conversation)
+
             render json: {ok:true, conversation: conversation, message: message}
           else
-            conversation = Conversation.create(conversation_params)
-            message = conversation.messages.create(message_params)
+            conversationN = Conversation.create(conversation_params)
+            message = conversationN.messages.create(message_params)
+             user = User.find(user_id_from_token)
+            s = user.convos_as_senders
+            r = user.convos_as_recipients
+            conversation = r + s 
+            conversation = ConversationSerializer.new(conversation)
+            
+
           render json: {ok:true, conversation: conversation, message: message}
           end
         else
