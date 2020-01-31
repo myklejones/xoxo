@@ -68,6 +68,18 @@ class ConversationsController < ApplicationController
         end
       end
     
+      def destroy
+        conversation = Conversation.find(params[:id])
+        
+        user_id = User.find(user_id_from_token)
+
+       
+        if user_id_from_token == user_id.id
+        conversation.destroy 
+        render json: {conversation:"Destroyed" }
+        end
+      end
+
     
     private
  def conversation_params
