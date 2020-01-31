@@ -37,27 +37,31 @@ class ConversationsController < ApplicationController
     def create
         if message_params[:user_id].to_i == user_id_from_token
           if Conversation.between(conversation_params[:sender_id],conversation_params[:recipient_id]).present?
-            conversationN =  Conversation.between(conversation_params[:sender_id],conversation_params[:recipient_id]).first
-            message = conversationN.messages.create(message_params)
-  
+            ac =  Conversation.between(conversation_params[:sender_id],conversation_params[:recipient_id]).first
+         
+            message = ac.messages.create(message_params)
+            ac=ConversationSerializer.new(ac)
             user = User.find(user_id_from_token)
             s = user.convos_as_senders
             r = user.convos_as_recipients
             conversation = r + s 
             conversation = ConversationSerializer.new(conversation)
-
-            render json: {ok:true, conversation: conversation, message: message}
+            user = UserSerializer.new(user)
+            render json: {ok:true, user:user, conversation: conversation, message: message, activeConvo: ac}
           else
-            conversationN = Conversation.create(conversation_params)
-            message = conversationN.messages.create(message_params)
+            ac = Conversation.create(conversation_params)
+
+            message = ac.messages.create(message_params)
+            ac=ConversationSerializer.new(ac)
              user = User.find(user_id_from_token)
             s = user.convos_as_senders
             r = user.convos_as_recipients
             conversation = r + s 
             conversation = ConversationSerializer.new(conversation)
-            
+          
+            user = UserSerializer.new(user)
 
-          render json: {ok:true, conversation: conversation, message: message}
+          render json: {ok:true, conversation: conversation, message: message, user:user,activeConvo:ac}
           end
         else
             render json: {errors: conversation.errors.full_messages}, status: :unprocessable_entity
