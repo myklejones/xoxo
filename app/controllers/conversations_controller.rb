@@ -35,6 +35,7 @@ class ConversationsController < ApplicationController
 
 
     def create
+    
         if message_params[:user_id].to_i == user_id_from_token
           if Conversation.between(conversation_params[:sender_id],conversation_params[:recipient_id]).present?
             ac =  Conversation.between(conversation_params[:sender_id],conversation_params[:recipient_id]).first
@@ -47,6 +48,7 @@ class ConversationsController < ApplicationController
             conversation = r + s 
             conversation = ConversationSerializer.new(conversation)
             user = UserSerializer.new(user)
+            ActionCable.server.broadcast('conversation_channel', {ok:true, user:user, conversation: conversation, message: message, activeConvo: ac}) 
             render json: {ok:true, user:user, conversation: conversation, message: message, activeConvo: ac}
           else
             ac = Conversation.create(conversation_params)
@@ -60,6 +62,7 @@ class ConversationsController < ApplicationController
             conversation = ConversationSerializer.new(conversation)
           
             user = UserSerializer.new(user)
+            ActionCable.server.broadcast('conversation_channel', {ok:true, user:user, conversation: conversation, message: message, activeConvo: ac})
 
           render json: {ok:true, conversation: conversation, message: message, user:user,activeConvo:ac}
           end
@@ -76,7 +79,9 @@ class ConversationsController < ApplicationController
        
         if user_id_from_token == user_id.id
         conversation.destroy 
-        render json: {conversation:"Destroyed" }
+        userConvos = user_id.convos_as_senders + user_id.convos_as_recipients
+        userConvos = ConversationSerializer.new(userConvos)
+        render json: {conversation:"Destroyed" , conversation: userConvos }
         end
       end
 
