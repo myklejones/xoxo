@@ -25,7 +25,4 @@ class ApplicationController < ActionController::API
         "boo"
     end 
 
-    
-   
-
 end

@@ -35,7 +35,6 @@ class ConversationsController < ApplicationController
 
 
     def create
-    
         if message_params[:user_id].to_i == user_id_from_token
           if Conversation.between(conversation_params[:sender_id],conversation_params[:recipient_id]).present?
             ac =  Conversation.between(conversation_params[:sender_id],conversation_params[:recipient_id]).first
@@ -60,7 +59,6 @@ class ConversationsController < ApplicationController
             r = user.convos_as_recipients
             conversation = r + s 
             conversation = ConversationSerializer.new(conversation)
-          
             user = UserSerializer.new(user)
             ActionCable.server.broadcast('conversation_channel', {ok:true, user:user, conversation: conversation, message: message, activeConvo: ac})
 
@@ -73,10 +71,8 @@ class ConversationsController < ApplicationController
     
       def destroy
         conversation = Conversation.find(params[:id])
-        
         user_id = User.find(user_id_from_token)
 
-       
         if user_id_from_token == user_id.id
         conversation.destroy 
         userConvos = user_id.convos_as_senders + user_id.convos_as_recipients
