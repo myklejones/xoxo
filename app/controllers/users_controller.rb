@@ -34,7 +34,6 @@ class UsersController < ApplicationController
         user.password = $pass
         user.update(update_user_params)
        
-     
         if user_id_from_token == user.id
             render json: {ok:true, user: user} 
             
